@@ -3,15 +3,13 @@ package com.star;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.ui.JBColor;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,12 +19,33 @@ import java.util.List;
  */
 public class MyBatisLogSqlPlugin extends AnAction {
 
+    private JTextArea jTextArea;
+
     @Override
     public void actionPerformed(AnActionEvent e) {
         // TODO: insert action logic here
         Editor editor = e.getData(PlatformDataKeys.EDITOR);
         Project project = e.getProject();
         if (null != editor && null != project) {
+            ToolWindow toolWindow = ToolWindowManager.getInstance(e.getProject()).getToolWindow("MyBatisLogSqlTool");
+            if (toolWindow != null) {
+
+                // 无论当前状态为关闭/打开，进行强制打开ToolWindow 2017/3/21 16:21
+                toolWindow.show(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+
+                // ToolWindow未初始化时，可能为空 2017/4/4 18:20
+                try {
+                    jTextArea = (JTextArea) ((JScrollPane) toolWindow.getContentManager().getContent(0)
+                            .getComponent().getComponent(0)).getViewport().getComponent(0);
+                } catch (Exception e1) {
+
+                }
+            }
             SelectionModel model = editor.getSelectionModel();
             String selectedText = model.getSelectedText();
             if ((null != selectedText) && (!"".equals(selectedText))) {
@@ -40,23 +59,11 @@ public class MyBatisLogSqlPlugin extends AnAction {
                     stringBuilder.append(" : \n");
                     stringBuilder.append(sql.trim());
                     stringBuilder.append("; \n");
+                    stringBuilder.append("\n");
                 }
-                showPopupBalloon(editor, stringBuilder.toString());
+                jTextArea.append(stringBuilder.toString());
             }
         }
-    }
-
-    private void showPopupBalloon(final Editor editor, final String result) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JBPopupFactory factory = JBPopupFactory.getInstance();
-                factory.createHtmlTextBalloonBuilder(result, null, new JBColor(new Color(186, 238, 186), new Color(73, 117, 73)), null)
-                        .setFadeoutTime(15000)
-                        .createBalloon()
-                        .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
-            }
-        });
     }
 
     private List<String> para(String text) {
@@ -104,13 +111,11 @@ public class MyBatisLogSqlPlugin extends AnAction {
 
     private boolean containsText(CharSequence str) {
         int strLen = str.length();
-
         for (int i = 0; i < strLen; ++i) {
             if (!Character.isWhitespace(str.charAt(i))) {
                 return true;
             }
         }
-
         return false;
     }
 

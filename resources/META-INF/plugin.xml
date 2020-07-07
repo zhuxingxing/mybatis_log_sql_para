@@ -1,8 +1,8 @@
 <idea-plugin>
   <id>MyBatisLogSqlPlugin</id>
   <name>MyBatisLogSqlPlugin</name>
-  <version>1.2</version>
-  <vendor url="https://github.com/zhuxingxing/mybatis_log_sql_para" email="137879802@qq.com">朱星星</vendor>
+  <version>1.1</version>
+  <vendor email="137879802@qq.com">朱星星</vendor>
   <depends>com.intellij.modules.lang</depends>
 
   <description><![CDATA[
@@ -22,10 +22,16 @@
   <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <depends>com.intellij.modules.platform</depends>
-
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- 工具窗口 -->
+    <toolWindow canCloseContents="false" anchor="bottom"
+                id="MyBatisLogSqlTool"
+                factoryClass="com.star.ToolWinFactory">
+    </toolWindow>
+  </extensions>
   <actions>
     <!-- Add your actions here -->
-    <action id="MyBatisLogSqlPlugin" class="com.star.MyBatisLogSqlPlugin" text="MyBatis Log 解析为 SQL" description="MyBatis Log 解析为 SQL">
+    <action id="MyBatisLogSqlPlugin" class="com.star.MyBatisLogSqlPlugin" text="解析MyBatisSql日志" description="MyBatis Log 解析为 SQL">
         <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
         <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl S"/>
     </action>
