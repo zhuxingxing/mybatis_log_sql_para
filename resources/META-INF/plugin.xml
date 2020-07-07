@@ -2,7 +2,7 @@
   <id>MyBatisLogSqlPlugin</id>
   <name>MyBatisLogSqlPlugin</name>
   <version>1.1</version>
-  <vendor email="137879802@qq.com">朱星星</vendor>
+  <vendor url="https://github.com/zhuxingxing/mybatis_log_sql_para" email="137879802@qq.com">朱星星</vendor>
   <depends>com.intellij.modules.lang</depends>
 
   <description><![CDATA[
