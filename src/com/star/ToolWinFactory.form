@@ -18,7 +18,7 @@
           <component id="a5383" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
             <constraints/>
             <properties>
-              <font name="JetBrains Mono" size="18" style="0"/>
+              <font name="Microsoft YaHei" size="18" style="0"/>
               <foreground color="-16729338"/>
               <lineWrap value="true"/>
               <margin top="0" left="0" bottom="0" right="0"/>

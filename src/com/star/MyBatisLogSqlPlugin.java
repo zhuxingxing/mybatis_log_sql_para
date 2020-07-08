@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.content.ContentManager;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class MyBatisLogSqlPlugin extends AnAction {
             ToolWindow toolWindow = ToolWindowManager.getInstance(e.getProject()).getToolWindow("MyBatisLogSqlTool");
             if (toolWindow != null) {
 
-                // 无论当前状态为关闭/打开，进行强制打开ToolWindow 2017/3/21 16:21
                 toolWindow.show(new Runnable() {
                     @Override
                     public void run() {
@@ -38,7 +38,6 @@ public class MyBatisLogSqlPlugin extends AnAction {
                     }
                 });
 
-                // ToolWindow未初始化时，可能为空 2017/4/4 18:20
                 try {
                     jTextArea = (JTextArea) ((JScrollPane) toolWindow.getContentManager().getContent(0)
                             .getComponent().getComponent(0)).getViewport().getComponent(0);
